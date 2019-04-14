@@ -63,8 +63,7 @@ def read_annot(path):
 DIR = './data/crop_5-2'
 VAL_RATIO = 0.2
 
-sub_dirs = ['batch_001', 'batch_002', 'batch_003', 'batch_004',
-    'batch_005', 'batch_101', 'batch_102']
+sub_dirs = os.listdir(DIR)
 sub_dirs = filter(lambda x: x.startswith('batch_'), sub_dirs)
 sub_dirs = map(lambda x: os.path.join(DIR, x), sub_dirs)
 sub_dirs = list(sub_dirs)
@@ -72,7 +71,7 @@ sub_dirs = list(sub_dirs)
 img_paths = []
 for sd in sub_dirs:
     files = os.listdir(sd)
-    files = filter(lambda x: x.endswith('.jpg'), files)
+    files = filter(lambda x: x.endswith('jpg'), files)
     files = map(lambda x: os.path.join(sd, x), files)
     files = map(lambda x: os.path.abspath(x), files)
     files = list(files)
