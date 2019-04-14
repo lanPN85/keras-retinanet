@@ -20,7 +20,7 @@ import argparse
 import os
 import sys
 import warnings
-
+import json
 import keras
 import keras.preprocessing.image
 import tensorflow as tf
@@ -32,21 +32,21 @@ if __name__ == "__main__" and __package__ is None:
     __package__ = "keras_retinanet.bin"
 
 # Change these to absolute imports if you copy this script outside the keras_retinanet package.
-from .. import layers  # noqa: F401
-from .. import losses
-from .. import models
-from ..callbacks import RedirectModel
-from ..callbacks.eval import Evaluate
-from ..models.retinanet import retinanet_bbox
-from ..preprocessing.csv_generator import CSVGenerator
-from ..preprocessing.kitti import KittiGenerator
-from ..preprocessing.open_images import OpenImagesGenerator
-from ..preprocessing.pascal_voc import PascalVocGenerator
-from ..utils.anchors import make_shapes_callback
-from ..utils.config import read_config_file, parse_anchor_parameters
-from ..utils.keras_version import check_keras_version
-from ..utils.model import freeze as freeze_model
-from ..utils.transform import random_transform_generator
+from keras_retinanet import layers  # noqa: F401
+from keras_retinanet import losses
+from keras_retinanet import models
+from keras_retinanet.callbacks import RedirectModel
+from keras_retinanet.callbacks.eval import Evaluate
+from keras_retinanet.models.retinanet import retinanet_bbox
+from keras_retinanet.preprocessing.csv_generator import CSVGenerator
+from keras_retinanet.preprocessing.kitti import KittiGenerator
+from keras_retinanet.preprocessing.open_images import OpenImagesGenerator
+from keras_retinanet.preprocessing.pascal_voc import PascalVocGenerator
+from keras_retinanet.utils.anchors import make_shapes_callback
+from keras_retinanet.utils.config import read_config_file, parse_anchor_parameters
+from keras_retinanet.utils.keras_version import check_keras_version
+from keras_retinanet.utils.model import freeze as freeze_model
+from keras_retinanet.utils.transform import random_transform_generator
 
 
 def makedirs(path):
@@ -391,7 +391,7 @@ def parse_args(args):
     group.add_argument('--imagenet-weights',  help='Initialize the model with pretrained imagenet weights. This is the default behaviour.', action='store_const', const=True, default=True)
     group.add_argument('--weights',           help='Initialize the model with weights from a file.')
     group.add_argument('--no-weights',        help='Don\'t initialize the model with any weights.', dest='imagenet_weights', action='store_const', const=False)
-
+    
     parser.add_argument('--backbone',         help='Backbone model used by retinanet.', default='resnet50', type=str)
     parser.add_argument('--batch-size',       help='Size of the batches.', default=1, type=int)
     parser.add_argument('--gpu',              help='Id of the GPU to use (as reported by nvidia-smi).')
@@ -401,6 +401,7 @@ def parse_args(args):
     parser.add_argument('--steps',            help='Number of steps per epoch.', type=int, default=10000)
     parser.add_argument('--lr',               help='Learning rate.', type=float, default=1e-5)
     parser.add_argument('--snapshot-path',    help='Path to store snapshots of models during training (defaults to \'./snapshots\')', default='./snapshots')
+    parser.add_argument('--export-path',      default='./exports')
     parser.add_argument('--tensorboard-dir',  help='Log directory for Tensorboard output', default='./logs')
     parser.add_argument('--no-snapshots',     help='Disable saving snapshots.', dest='snapshots', action='store_false')
     parser.add_argument('--no-evaluation',    help='Disable per epoch evaluation.', dest='evaluation', action='store_false')
@@ -423,6 +424,17 @@ def main(args=None):
     if args is None:
         args = sys.argv[1:]
     args = parse_args(args)
+
+    # Export configs
+    configs = {
+        'backbone': args.backbone,
+        'min_size': args.image_min_side
+        'max_size': args.image_max_side
+    }
+
+    conf_path = os.path.join(args.export_path, 'configs.json')
+    with open(conf_path, 'wt') as f:
+        json.dump(configs, f)
 
     # create object that stores backbone information
     backbone = models.backbone(args.backbone)
@@ -503,7 +515,6 @@ def main(args=None):
         use_multiprocessing=use_multiprocessing,
         max_queue_size=args.max_queue_size
     )
-
 
 if __name__ == '__main__':
     main()

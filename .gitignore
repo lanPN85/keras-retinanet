@@ -4,3 +4,9 @@ __pycache__/
 *.so
 /.pytest_cache
 /.cache
+
+data/
+venv/
+results
+.vscode/
+keras-retinanet.ipynb
