@@ -72,6 +72,7 @@ sub_dirs = list(sub_dirs)
 img_paths = []
 for sd in sub_dirs:
     files = os.listdir(sd)
+    files = filter(lambda x: x.endswith('.jpg'), files)
     files = map(lambda x: os.path.join(sd, x), files)
     files = map(lambda x: os.path.abspath(x), files)
     files = list(files)
