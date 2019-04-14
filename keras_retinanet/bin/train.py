@@ -401,7 +401,7 @@ def parse_args(args):
     parser.add_argument('--steps',            help='Number of steps per epoch.', type=int, default=10000)
     parser.add_argument('--lr',               help='Learning rate.', type=float, default=1e-5)
     parser.add_argument('--snapshot-path',    help='Path to store snapshots of models during training (defaults to \'./snapshots\')', default='./snapshots')
-    parser.add_argument('--export-path',      default='./exports')
+    parser.add_argument('--export-path',      default='./export')
     parser.add_argument('--tensorboard-dir',  help='Log directory for Tensorboard output', default='./logs')
     parser.add_argument('--no-snapshots',     help='Disable saving snapshots.', dest='snapshots', action='store_false')
     parser.add_argument('--no-evaluation',    help='Disable per epoch evaluation.', dest='evaluation', action='store_false')
@@ -428,7 +428,7 @@ def main(args=None):
     # Export configs
     configs = {
         'backbone': args.backbone,
-        'min_size': args.image_min_side
+        'min_size': args.image_min_side,
         'max_size': args.image_max_side
     }
 
