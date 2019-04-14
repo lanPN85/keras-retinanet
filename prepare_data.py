@@ -5,49 +5,58 @@ import json
 import random
 
 
+def validate_coors(coors):
+    return coors[0][0] < coors[1][0] and coors[0][1] < coors[1][1]
+
+
 def read_annot(path):
     with open(path, 'rt') as f:
         d = json.load(f)
     annots = []
     if 'AddressWordCoors' in d.keys():
         for coor in d['AddressWordCoors']:
-            annots.append([
-                coor[0][0], coor[0][1],
-                coor[1][0], coor[1][1],
-                'address'
-            ])
+            if validate_coors(coor):
+                annots.append([
+                    coor[0][0], coor[0][1],
+                    coor[1][0], coor[1][1],
+                    'address'
+                ])
 
     if 'HometownWordCoors' in d.keys():
         for coor in d['HometownWordCoors']:
-            annots.append([
-                coor[0][0], coor[0][1],
-                coor[1][0], coor[1][1],
-                'hometown'
-            ])
+            if validate_coors(coor):
+                annots.append([
+                    coor[0][0], coor[0][1],
+                    coor[1][0], coor[1][1],
+                    'hometown'
+                ])
 
     if 'NameWordCoors' in d.keys():
         for coor in d['NameWordCoors']:
-            annots.append([
-                coor[0][0], coor[0][1],
-                coor[1][0], coor[1][1],
-                'name'
-            ])
+            if validate_coors(coor):
+                annots.append([
+                    coor[0][0], coor[0][1],
+                    coor[1][0], coor[1][1],
+                    'name'
+                ])
 
     if 'BirthdateCoor' in d.keys():
         coor = d['BirthdateCoor']
-        annots.append([
-            coor[0][0], coor[0][1],
-            coor[1][0], coor[1][1],
-            'dob'
-        ])
+        if validate_coors(coor):
+            annots.append([
+                coor[0][0], coor[0][1],
+                coor[1][0], coor[1][1],
+                'dob'
+            ])
     
     if 'id_rect' in d.keys():
         coor = d['id_rect']
-        annots.append([
-            coor[0][0], coor[0][1],
-            coor[1][0], coor[1][1],
-            'id'
-        ])
+        if validate_coors(coor):
+            annots.append([
+                coor[0][0], coor[0][1],
+                coor[1][0], coor[1][1],
+                'id'
+            ])
     
     return annots
 
