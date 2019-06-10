@@ -159,7 +159,8 @@ def __create_pyramid_features(C3, C4, C5, feature_size=256):
     P7 = keras.layers.Activation('relu', name='C6_relu')(P6)
     P7 = keras.layers.Conv2D(feature_size, kernel_size=3, strides=2, padding='same', name='P7')(P7)
 
-    return [P3, P4, P5, P6, P7]
+    # return [P3, P4, P5, P6, P7]
+    return [P3, P4, P5, P6]
 
 
 def default_submodels(num_classes, num_anchors):

@@ -11,3 +11,4 @@ build/
 results
 .vscode/
 keras-retinanet.ipynb
+.ipynb_checkpoints/
