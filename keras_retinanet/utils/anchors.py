@@ -120,7 +120,7 @@ def compute_gt_annotations(
     anchors,
     annotations,
     negative_overlap=0.4,
-    positive_overlap=0.5
+    positive_overlap=0.55
 ):
     """ Obtain indices of gt annotations with the greatest overlap.
 
@@ -217,7 +217,7 @@ def anchors_for_shape(
     """
 
     if pyramid_levels is None:
-        pyramid_levels = [3, 4, 5, 6]
+        pyramid_levels = [2, 3, 4, 5, 6]
 
     if anchor_params is None:
         anchor_params = AnchorParameters.default
