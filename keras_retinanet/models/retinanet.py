@@ -153,7 +153,7 @@ def __create_pyramid_features(C2, C3, C4, C5, feature_size=256):
     P3 = keras.layers.Conv2D(feature_size, kernel_size=3, strides=1, padding='same', name='P3')(P3)
     P3_upsampled = layers.UpsampleLike(name='P3_upsampled')([P3, C2])
 
-    P2 = keras.layers.Conv2D(feature_size, kernel_size=1, strides=1, padding='same', name='C3_reduced')(C2)
+    P2 = keras.layers.Conv2D(feature_size, kernel_size=1, strides=1, padding='same', name='C2_reduced')(C2)
     P2 = keras.layers.Add(name='P2_merged')([P3_upsampled, P2])
     P3 = keras.layers.Conv2D(feature_size, kernel_size=3, strides=1, padding='same', name='P2')(P2)
 
