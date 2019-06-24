@@ -55,8 +55,8 @@ def anchor_targets_bbox(
     image_group,
     annotations_group,
     num_classes,
-    negative_overlap=0.4,
-    positive_overlap=0.5
+    negative_overlap=0.5,
+    positive_overlap=0.65
 ):
     """ Generate anchor targets for bbox detection.
 
@@ -119,8 +119,8 @@ def anchor_targets_bbox(
 def compute_gt_annotations(
     anchors,
     annotations,
-    negative_overlap=0.4,
-    positive_overlap=0.5
+    negative_overlap=0.5,
+    positive_overlap=0.65
 ):
     """ Obtain indices of gt annotations with the greatest overlap.
 
@@ -208,7 +208,7 @@ def anchors_for_shape(
 
     Args
         image_shape: The shape of the image.
-        pyramid_levels: List of ints representing which pyramids to use (defaults to [3, 4, 5, 6, 7]).
+        pyramid_levels: List of ints representing which pyramids to use (defaults to [3, 4, 5, 6]).
         anchor_params: Struct containing anchor parameters. If None, default values are used.
         shapes_callback: Function to call for getting the shape of the image at different pyramid levels.
 
