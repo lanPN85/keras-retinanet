@@ -185,6 +185,13 @@ def run(generator, args, anchor_params):
                 image, image_scale = generator.resize_image(image)
                 annotations['bboxes'] *= image_scale
 
+            for label, box in zip(annotations['labels'], annotations['bboxes']):
+                h = box[3] - box[1]
+                w = box[2] - box[0]
+                size = w * h
+                print(box, '%dx%d' % (w, h), generator.label_to_name(label))
+            print('==========================')
+
             anchors = anchors_for_shape(image.shape, anchor_params=anchor_params)
             positive_indices, _, max_indices = compute_gt_annotations(anchors, annotations['bboxes'])
 
