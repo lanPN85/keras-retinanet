@@ -21,6 +21,8 @@ import os
 import sys
 import cv2
 
+from threading import Thread
+
 # Allow relative imports when being executed as script.
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -175,6 +177,7 @@ def run(generator, args, anchor_params):
         # load the data
         image       = generator.load_image(i)
         annotations = generator.load_annotations(i)
+        
         if len(annotations['labels']) > 0 :
             # apply random transformations
             if args.random_transform:
@@ -184,13 +187,6 @@ def run(generator, args, anchor_params):
             if args.resize:
                 image, image_scale = generator.resize_image(image)
                 annotations['bboxes'] *= image_scale
-
-            for label, box in zip(annotations['labels'], annotations['bboxes']):
-                h = box[3] - box[1]
-                w = box[2] - box[0]
-                size = w * h
-                print(box, '%dx%d' % (w, h), generator.label_to_name(label))
-            print('==========================')
 
             anchors = anchors_for_shape(image.shape, anchor_params=anchor_params)
             positive_indices, _, max_indices = compute_gt_annotations(anchors, annotations['bboxes'])
@@ -209,7 +205,23 @@ def run(generator, args, anchor_params):
                 draw_boxes(image, annotations['bboxes'][max_indices[positive_indices], :], (0, 255, 0))
 
         cv2.imshow('Image', image)
-        if cv2.waitKey() == ord('q'):
+
+        def print_info():
+            for j, label, box in zip(range(len(annotations['labels'])),
+                annotations['labels'], annotations['bboxes']):
+                h = box[3] - box[1]
+                w = box[2] - box[0]
+                size = w * h
+                matched = j in max_indices[positive_indices]
+                print(box, '%dx%d' % (w, h), 
+                    generator.label_to_name(label), matched)
+            print('==========================')
+        thread = Thread(target=print_info)
+        thread.start()
+        
+        k = cv2.waitKey()
+        thread.join()
+        if k == ord('q'):
             return False
     return True
 
