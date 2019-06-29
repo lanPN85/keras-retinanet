@@ -56,7 +56,7 @@ def anchor_targets_bbox(
     annotations_group,
     num_classes,
     negative_overlap=0.5,
-    positive_overlap=0.75
+    positive_overlap=0.65
 ):
     """ Generate anchor targets for bbox detection.
 
@@ -120,7 +120,7 @@ def compute_gt_annotations(
     anchors,
     annotations,
     negative_overlap=0.5,
-    positive_overlap=0.75
+    positive_overlap=0.65
 ):
     """ Obtain indices of gt annotations with the greatest overlap.
 
