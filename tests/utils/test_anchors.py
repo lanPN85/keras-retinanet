@@ -52,7 +52,7 @@ def test_anchors_for_shape_dimensions():
     scales  = np.array([1, 1.2, 1.6], keras.backend.floatx())
     anchor_params = AnchorParameters(sizes, strides, ratios, scales)
 
-    pyramid_levels = [3, 4, 5]
+    pyramid_levels = [2, 3, 4, 5, 6]
     image_shape    = (64, 64)
     all_anchors    = anchors_for_shape(image_shape, pyramid_levels=pyramid_levels, anchor_params=anchor_params)
 
