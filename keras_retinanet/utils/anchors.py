@@ -217,8 +217,8 @@ def anchors_for_shape(
     """
 
     if pyramid_levels is None:
-        pyramid_levels = [2, 3, 4, 5, 6]
-        # pyramid_levels = [3, 4, 5, 6, 7]
+        # pyramid_levels = [2, 3, 4, 5, 6]
+        pyramid_levels = [3, 4, 5, 6, 7]
 
     if anchor_params is None:
         anchor_params = AnchorParameters.default
@@ -331,6 +331,7 @@ def anchors_for_shape(
                         [-40, -22, 40, 22],
                         [-50, -22, 50, 22],
                         [-60, -22, 60, 22]])
+            
     for idx, p in enumerate(pyramid_levels):
         # anchors = generate_anchors(
         #     base_size=anchor_params.sizes[idx],
@@ -338,6 +339,7 @@ def anchors_for_shape(
         #     scales=anchor_params.scales
         # )
         #print(anchors)
+        print(idx, len(image_shapes), len(anchor_params.strides))
         shifted_anchors = shift(image_shapes[idx], anchor_params.strides[2*idx], anchor_params.strides[2*idx+1], anchors)
         all_anchors     = np.append(all_anchors, shifted_anchors, axis=0)
 
